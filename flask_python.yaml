@@ -1,8 +1,8 @@
 --- # flask app to display hello world
 
-- hosts: python
+- hosts: flask
   become: yes
-  remote_user: test
+  remote_user: ec2-user
   
   vars:
     app_name: FlaskApp
