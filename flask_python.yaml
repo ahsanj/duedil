@@ -1,0 +1,53 @@
+--- # flask app to display hello world
+
+- hosts: python
+  become: yes
+  remote_user: test
+  
+  vars:
+    app_name: FlaskApp
+    repo_url_script: https://github.com/ahsanj/duedil
+    remote_remote: origin
+    repo_version: master
+    webapp_dir: /var/www/FlaskApp/FlaskApp
+   
+  tasks:
+    - name: Install the required packages
+      apt: name={{ item }} state=present
+      with_items:
+      - apache2
+      - libapache2-mod-wsgi
+      - python-dev
+      - git
+      notify:
+       - restart apache
+  
+    - name: Enable mod_wsgi
+      command: "a2enmod wsgi"
+      changed_when: False
+  
+    - name: Create Flaskapp directory
+      file: path={{ webapp_dir }} state=directory owner=www-data group=www-data mode=0775
+  
+    - name: Install Flask
+      pip: name=Flask
+  
+    - name : Git Pull app
+      git: repo={{ repo_url_script }} dest={{ webapp_dir }} version={{ repo_version }}
+  
+    - name: Moving the WDGI ..
+      command: "cp {{ webapp_dir }}/flaskapp.wsgi /var/www/FlaskApp/"
+      changed_when: False
+  
+    - name: Moving the Apache config
+      command: "cp {{ webapp_dir}}/Flaskapp.conf /etc/apache2/sites-available/"
+      changed_when: False
+  
+    - name: Enable the Flashapp
+      command: "a2ensite Flaskapp" 
+      changed_when: False
+
+  handlers:  
+    - name: restart apache
+      service: name=apache2 state=restarted
+
