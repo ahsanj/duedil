@@ -10,8 +10,8 @@ export AWS_DEFAULT_PROFILE=profile_name
 
 Also
 
-# ssh-agent bash
-# ssh-add ~/.ssh/id_rsa
+- ssh-agent bash
+- ssh-add ~/.ssh/id_rsa
 
 Install Terraform
 
