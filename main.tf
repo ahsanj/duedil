@@ -1,8 +1,6 @@
 provider "aws" {
   region  = "${var.aws_region}"
-  #profile =  "${var.aws_profile}"
-  access_key="AKIAIEF435AR52ZZ6K3Q"
-  secret_key="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"
+  profile =  "${var.aws_profile}"
   
 }
 
