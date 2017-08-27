@@ -1,8 +1,9 @@
 --- # flask app to display hello world
+# make sure the "host_key_checking" is set to False
 
 - hosts: flask
   become: yes
-  remote_user: ec2-user
+  remote_user: ubuntu
   
   vars:
     app_name: FlaskApp
@@ -19,8 +20,9 @@
       - libapache2-mod-wsgi
       - python-dev
       - git
-      notify:
-       - restart apache
+      - python-pip
+      #notify:
+      # - restart apache
   
     - name: Enable mod_wsgi
       command: "a2enmod wsgi"
@@ -40,14 +42,14 @@
       changed_when: False
   
     - name: Moving the Apache config
-      command: "cp {{ webapp_dir}}/Flaskapp.conf /etc/apache2/sites-available/"
+      command: "cp {{ webapp_dir }}/Flaskapp.conf /etc/apache2/sites-available/"
       changed_when: False
   
     - name: Enable the Flashapp
       command: "a2ensite Flaskapp" 
       changed_when: False
 
-  handlers:  
-    - name: restart apache
+  #handlers:  
+    - name: Restart apache
       service: name=apache2 state=restarted
 
