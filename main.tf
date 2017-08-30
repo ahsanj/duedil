@@ -149,6 +149,8 @@ resource "aws_instance" "flask" {
 }
 
 # load_balancer
+
+  
 # launch_configuration
 # Autoscaling
 # route53
